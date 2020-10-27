@@ -2,8 +2,8 @@ import React, { useState }  from 'react';
 import { useHistory } from "react-router-dom";
 
 import jwt_decode from 'jwt-decode';
-// import Menu from '../../components/menu/menu_index';
-// import Rodape from '../../components/rodape/rodape_index';
+import Menu from '../../components/menu/index';
+import Rodape from '../../components/rodape/index';
 import {Container, Form, Button} from 'react-bootstrap';
 
 import './index.css';
@@ -49,7 +49,7 @@ const Login = () => {
 
     return (
         <div>
-        {/* <Menu /> */}
+        <Menu />
         <Container className='form-height'>
                 <Form className='form-signin' onSubmit={ event => logar(event)} >
                     <div className='text-center'>
@@ -74,7 +74,7 @@ const Login = () => {
                     <a href='/cadastrar' style={{ marginTop :'30px'}}>Não tenho conta!</a>
                 </Form>
             </Container>
-        {/* <Rodape /> */}
+        <Rodape />
         </div>
     )
 }

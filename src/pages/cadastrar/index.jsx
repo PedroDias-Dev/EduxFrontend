@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-//import Menu from '../../components/menu/menu_index';
-//import Rodape from '../../components/rodape/rodape_index';
+import Menu from '../../components/menu/index';
+import Rodape from '../../components/rodape/index';
 import {Container, Form, Button} from 'react-bootstrap';
 import {useHistory} from 'react-router-dom'
 
 import './index.css';
 import logo from '../../assets/img/logo_2.png'
+
+import jwt_decode from 'jwt-decode';
 
 const Cadastrar = () => {
 
@@ -53,7 +55,7 @@ const Cadastrar = () => {
 
     return (
         <div>
-        {/* <Menu /> */}
+        <Menu />
         <Container className='form-height'>
                 <Form className='form-signin' >
                     <div className='text-center'>
@@ -91,7 +93,7 @@ const Cadastrar = () => {
                     <a href='/login' style={{ marginTop :'30px'}}>Já tenho conta!</a>
                 </Form>
             </Container>
-        {/* <Rodape /> */}
+        <Rodape />
         </div>
     )
 }
