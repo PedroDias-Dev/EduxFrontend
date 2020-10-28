@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import Home from './pages/home/index';
 import Login from './pages/login/index';
 import Cadastrar from './pages/cadastrar/index';
+import gerenciarAluno from './pages/gerenciarAluno/index';
+
 import NaoEncontrada from './pages/not_found/index';
 
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
@@ -30,6 +32,7 @@ const routing = (
       <RotaPrivada exact path='/' component={Home} />
       <Route path='/login'  component={Login} />
       <Route path='/cadastrar' component={Cadastrar} />
+      <Route path='/gerenciarAluno' component={gerenciarAluno} />
       <Route component={NaoEncontrada} />
     </Switch>
   </Router>

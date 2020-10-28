@@ -28,8 +28,12 @@ const Menu = () => {
         } else if( jwt_decode(token).role === 'Professor'){
             return (
                 <Nav>
-                    <Nav.Link href="/dicas">Dicas</Nav.Link>
-                    <Nav.Link href="/categorias">Categorias</Nav.Link>
+                    {/* <Nav.Link href="/dicas">Dicas</Nav.Link>
+                    <Nav.Link href="/categorias">Categorias</Nav.Link> */}
+                    <Nav.Link href="/gerenciarAluno">Gerenciar Alunos</Nav.Link>
+                    <Nav.Link href="/gerenciarObjetivo">Gerenciar Objetivos</Nav.Link>
+                    <Nav.Link href="/gerenciarTurma">Gerenciar Turmas</Nav.Link>
+                    <Nav.Link href="/rankingGeral">Ranking Geral</Nav.Link>
                     <Nav.Link href="/professor">Menu de Professor</Nav.Link>
                     <NavDropdown title={jwt_decode(token).nameid} id="basic-nav-dropdown">
                         <NavDropdown.Item href="/perfil">Perfil</NavDropdown.Item>
@@ -41,7 +45,9 @@ const Menu = () => {
         } else {
             return (
                 <Nav>
-                    <Nav.Link href="/dicas">Dicas</Nav.Link>
+                    <Nav.Link href="/avaliacoes">Avaliações</Nav.Link>
+                    <Nav.Link href="/conquistas">Conquistas</Nav.Link>
+                    <Nav.Link href="/listaObjetivos">Objetivos</Nav.Link>
                     <Nav.Link href="/aluno">Menu Aluno</Nav.Link>
                     <NavDropdown title={jwt_decode(token).family_name} id="basic-nav-dropdown">
                         <NavDropdown.Item href="/perfil">Perfil</NavDropdown.Item>
