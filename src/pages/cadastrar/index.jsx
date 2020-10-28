@@ -48,10 +48,6 @@ const Cadastrar = () => {
 
             let usuario = jwt_decode(data.token);
 
-
-            if(usuario.role === 'Administrador')
-                history.push('/admin/dashboard');
-            else
             history.push('/login');
         })
         .catch(err => console.error(err));

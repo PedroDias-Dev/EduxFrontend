@@ -39,12 +39,8 @@ const Login = () => {
 
             let usuario = jwt_decode(data.token);
 
-            console.log(usuario)
-// 
-            // let a = usuario."http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
-
-            if(usuario.role === 'Administrador'){
-                history.push('/home');
+            if(usuario.role === 'Professor'){
+                history.push('/professor');
             }
             else{
                 history.push('/');

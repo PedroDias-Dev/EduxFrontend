@@ -25,11 +25,12 @@ const Menu = () => {
                     <Nav.Link href="/cadastrar">Cadastrar</Nav.Link>
                 </Nav>
             );
-        } else if( jwt_decode(token).role === 'Administrador'){
+        } else if( jwt_decode(token).role === 'Professor'){
             return (
                 <Nav>
                     <Nav.Link href="/dicas">Dicas</Nav.Link>
-                    <Nav.Link href="/admin/categorias">Categorias</Nav.Link>
+                    <Nav.Link href="/categorias">Categorias</Nav.Link>
+                    <Nav.Link href="/professor">Menu de Professor</Nav.Link>
                     <NavDropdown title={jwt_decode(token).nameid} id="basic-nav-dropdown">
                         <NavDropdown.Item href="/perfil">Perfil</NavDropdown.Item>
                         <NavDropdown.Divider />
@@ -41,6 +42,7 @@ const Menu = () => {
             return (
                 <Nav>
                     <Nav.Link href="/dicas">Dicas</Nav.Link>
+                    <Nav.Link href="/aluno">Menu Aluno</Nav.Link>
                     <NavDropdown title={jwt_decode(token).family_name} id="basic-nav-dropdown">
                         <NavDropdown.Item href="/perfil">Perfil</NavDropdown.Item>
                         <NavDropdown.Divider />
