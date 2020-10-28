@@ -12,29 +12,32 @@ import jwt_decode from 'jwt-decode';
 const Cadastrar = () => {
 
     const history = useHistory();
-    const [id, setId] = useState('');
+    //const [id, setId] = useState('');
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [permissao, setPermissao] = useState('');
+    //const [permissao, setPermissao] = useState('');
+    const [idPerfil, setIdPerfil] = useState('');
+
 
     const registrar = (event) => {
         event.preventDefault();
 
-        fetch('http://localhost:62602/api/register',{
+        fetch('http://localhost:55718/api/Usuario/register',{
             method : 'POST',
             body : JSON.stringify({
                 nome : nome,
                 email : email,
                 senha : senha,
-                permissao : permissao
+                idPerfil : idPerfil
             }),
             headers : {
-                'content-type' : 'application/json'
+                'content-type' : 'application/json-patch+json'
             }
         })
         .then(response => {
             if(response.ok){
+                alert('Tudo certo! Seu perfil foi cadastrado com sucesso!')
                 return response.json();
             }
 
@@ -45,10 +48,11 @@ const Cadastrar = () => {
 
             let usuario = jwt_decode(data.token);
 
-            if(usuario.role === 'Admin')
+
+            if(usuario.role === 'Administrador')
                 history.push('/admin/dashboard');
             else
-                history.push('/');
+            history.push('/login');
         })
         .catch(err => console.error(err));
     }
@@ -57,9 +61,9 @@ const Cadastrar = () => {
         <div>
         <Menu />
         <Container className='form-height'>
-                <Form className='form-signin' >
+                <Form className='form-signin' onSubmit={ event => registrar(event)}>
                     <div className='text-center'>
-                     <img src={logo} alt='EduX' style={{ width : '200px'}} />
+                     <img src={logo} alt='Logo EduX' style={{ width : '200px'}} />
                     </div>
                     <br/>
                     <small>Informe os dados Abaixo</small>
@@ -78,17 +82,25 @@ const Cadastrar = () => {
                         <Form.Label>Senha</Form.Label>
                         <Form.Control type="password" value={senha} onChange={ event => setSenha(event.target.value)} placeholder="Senha"  required/>
                     </Form.Group>
-                    <Form.Group controlId="formBasicCategoria">
+
+                    {/* <Form.Group controlId="formBasicCategoria">
                                 <Form.Label>Tipo</Form.Label>
                                 <Form.Control as="select" size="lg" custom onChange={event => setPermissao(event.target.value)} >
                                     <option value={1}>Professor</option>
                                     <option value={2}>Aluno</option>
 
                                 </Form.Control>
-                            </Form.Group>
+                    </Form.Group> */}
+
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Perfil </Form.Label>
+                        <Form.Control type="text" value={idPerfil} onChange={ event => setIdPerfil(event.target.value)} placeholder="Informe o ID de Perfil" required />
+                    </Form.Group>
+
                     <Button variant="primary" type="submit">
                         Enviar
                     </Button>
+
                     <br/><br/>
                     <a href='/login' style={{ marginTop :'30px'}}>Já tenho conta!</a>
                 </Form>

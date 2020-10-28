@@ -6,19 +6,31 @@ import reportWebVitals from './reportWebVitals';
 import Home from './pages/home/index';
 import Login from './pages/login/index';
 import Cadastrar from './pages/cadastrar/index';
-//import NaoEncontrada from './pages/not_found/index';
+import NaoEncontrada from './pages/not_found/index';
 
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const RotaPrivada = ({component : Component, ...rest}) => (
+  <Route
+    {...rest}
+    render = {
+      props => 
+      localStorage.getItem('token-edux') !== null ?
+        <Component {...props} /> :
+        <Redirect to={{pathname : '/login', state :{from : props.location}}} /> 
+    }
+  />
+);
+
 const routing = (
   <Router>
     <Switch>
-      <Route exact path='/' component={Home} />
+      <RotaPrivada exact path='/' component={Home} />
       <Route path='/login'  component={Login} />
       <Route path='/cadastrar' component={Cadastrar} />
-      {/* <Route component={NaoEncontrada} /> */}
+      <Route component={NaoEncontrada} />
     </Switch>
   </Router>
 )

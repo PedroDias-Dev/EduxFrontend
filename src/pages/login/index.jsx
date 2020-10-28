@@ -17,7 +17,7 @@ const Login = () => {
     const logar = (event) => {
         event.preventDefault();
 
-        fetch('http://localhost:62602/api/Account/login',{
+        fetch('http://localhost:55718/api/Login',{
             method : 'POST',
             body : JSON.stringify({
                 email : email,
@@ -39,10 +39,16 @@ const Login = () => {
 
             let usuario = jwt_decode(data.token);
 
-            if(usuario.role === 'Professor')
-                history.push('/admin/dashboard');
-            else
-                history.push('/eventos');
+            console.log(usuario)
+// 
+            // let a = usuario."http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+
+            if(usuario.role === 'Administrador'){
+                history.push('/home');
+            }
+            else{
+                history.push('/');
+            }
         })
         .catch(err => console.error(err));
     }
@@ -53,7 +59,7 @@ const Login = () => {
         <Container className='form-height'>
                 <Form className='form-signin' onSubmit={ event => logar(event)} >
                     <div className='text-center'>
-                     <img src={logo} alt='NYOUS' style={{ width : '64px'}} />
+                     <img src={logo} alt='Logo EduX' style={{ width : '200px'}} />
                     </div>
                     <br/>
                     <small>Informe os dados Abaixo</small>
