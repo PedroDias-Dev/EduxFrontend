@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
-// import Menu from '../../components/menu/menu_index';
-// import Rodape from '../../components/rodape/rodape_index';
+import Menu from '../../components/menu/index';
+import Rodape from '../../components/rodape/index';
 import { Button, Table, Form } from 'react-bootstrap';
 import { url } from '../../utils/constants';
 import './index.css'
@@ -31,6 +31,8 @@ const Objetivos = () => {
 
 
     return (
+            <div>
+                <Menu/>
 
         <div className="container" >
             <div className="row">
@@ -132,7 +134,9 @@ const Objetivos = () => {
                     </Table>
                 </div>
             </div>
+            <Rodape/>
         </div>
+    </div>
     )
 }
 
