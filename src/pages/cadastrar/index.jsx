@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 //import Rodape from '../../components/rodape/rodape_index';
 import {Container, Form, Button} from 'react-bootstrap';
 import {useHistory} from 'react-router-dom'
-
+import jwt_decode from 'jwt-decode';
 import './index.css';
 import logo from '../../assets/img/logo_2.png'
 
