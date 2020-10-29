@@ -35,7 +35,8 @@ const routing = (
       <Route path='/cadastrar' component={Cadastrar} />
       <Route path='/objetivos' component={Objetivos} />
       <Route path='/turmas' component={Turmas} />
-      <RotaPrivada exact path='/' component={Home} />
+      {/* <RotaPrivada exact path='/' component={Home} /> */}
+      <Route path='/' component={Home} />
       <Route path='/gerenciarAluno' component={gerenciarAluno} />
       <Route component={NaoEncontrada} />
     </Switch>
