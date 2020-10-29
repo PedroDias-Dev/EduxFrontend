@@ -2,8 +2,8 @@ import React, { useState }  from 'react';
 import { useHistory } from "react-router-dom";
 
 import jwt_decode from 'jwt-decode';
-// import Menu from '../../components/menu/menu_index';
-// import Rodape from '../../components/rodape/rodape_index';
+import Menu from '../../components/menu/index';
+import Rodape from '../../components/rodape/index';
 import {Container, Form, Button} from 'react-bootstrap';
 
 import './index.css';
@@ -17,7 +17,7 @@ const Login = () => {
     const logar = (event) => {
         event.preventDefault();
 
-        fetch('http://localhost:62602/api/Account/login',{
+        fetch('http://localhost:55718/api/Login',{
             method : 'POST',
             body : JSON.stringify({
                 email : email,
@@ -39,21 +39,23 @@ const Login = () => {
 
             let usuario = jwt_decode(data.token);
 
-            if(usuario.role === 'Professor')
-                history.push('/admin/dashboard');
-            else
-                history.push('/eventos');
+            if(usuario.role === 'Professor'){
+                history.push('/professor');
+            }
+            else{
+                history.push('/');
+            }
         })
         .catch(err => console.error(err));
     }
 
     return (
         <div>
-        {/* <Menu /> */}
+        <Menu />
         <Container className='form-height'>
                 <Form className='form-signin' onSubmit={ event => logar(event)} >
                     <div className='text-center'>
-                     <img src={logo} alt='NYOUS' style={{ width : '64px'}} />
+                     <img src={logo} alt='Logo EduX' style={{ width : '200px'}} />
                     </div>
                     <br/>
                     <small>Informe os dados Abaixo</small>
@@ -74,7 +76,7 @@ const Login = () => {
                     <a href='/cadastrar' style={{ marginTop :'30px'}}>Não tenho conta!</a>
                 </Form>
             </Container>
-        {/* <Rodape /> */}
+        <Rodape />
         </div>
     )
 }

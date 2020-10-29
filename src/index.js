@@ -9,10 +9,23 @@ import Cadastrar from './pages/cadastrar';
 import Objetivos from './pages/objetivos';
 import Turmas from './pages/turmas';
 //import NaoEncontrada from './pages/not_found/index';
-
+import gerenciarAluno from './pages/gerenciarAluno/index';
+import NaoEncontrada from './pages/not_found/index';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+const RotaPrivada = ({component : Component, ...rest}) => (
+  <Route
+    {...rest}
+    render = {
+      props => 
+      localStorage.getItem('token-edux') !== null ?
+        <Component {...props} /> :
+        <Redirect to={{pathname : '/login', state :{from : props.location}}} /> 
+    }
+  />
+);
 
 const routing = (
   <Router>
@@ -22,7 +35,9 @@ const routing = (
       <Route path='/cadastrar' component={Cadastrar} />
       <Route path='/objetivos' component={Objetivos} />
       <Route path='/turmas' component={Turmas} />
-      {/* <Route component={NaoEncontrada} /> */}
+      <RotaPrivada exact path='/' component={Home} />
+      <Route path='/gerenciarAluno' component={gerenciarAluno} />
+      <Route component={NaoEncontrada} />
     </Switch>
   </Router>
 )
