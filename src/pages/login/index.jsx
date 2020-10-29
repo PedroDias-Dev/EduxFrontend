@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 import Menu from '../../components/menu/index';
 import Rodape from '../../components/rodape/index';
+import Side from '../../components/side_menu/index'
 import {Container, Form, Button} from 'react-bootstrap';
 
 import './index.css';
@@ -52,6 +53,7 @@ const Login = () => {
     return (
         <div>
         <Menu />
+        {/* <Side /> */}
         <Container className='form-height'>
                 <Form className='form-signin' onSubmit={ event => logar(event)} >
                     <div className='text-center'>
