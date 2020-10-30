@@ -1,0 +1,21 @@
+h3{
+    color: black;
+}
+
+p{
+    color: darkgray;
+}
+
+.caption{
+    margin-left: 20em;
+}
+
+.cards{
+    display: flex;
+    margin-top: 2em;
+    justify-content: space-between;
+}
+
+.cards Button{
+    width: 100%;
+}

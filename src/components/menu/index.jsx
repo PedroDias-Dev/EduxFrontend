@@ -17,6 +17,9 @@ const Menu = () => {
     const renderMenu = () => {
         const token = localStorage.getItem('token-edux');
 
+        let tokenProfessor = 'Professor';
+        let tokenAluno = 'Aluno';
+
 
         if(token === null){
             return (
@@ -25,7 +28,8 @@ const Menu = () => {
                     <Nav.Link href="/cadastrar">Cadastrar</Nav.Link>
                 </Nav>
             );
-        } else if( jwt_decode(token).role === 'Professor'){
+            // jwt_decode(token).role
+        } else if(tokenProfessor  === 'Professor'){
             return (
                 <Nav>
                     {/* <Nav.Link href="/dicas">Dicas</Nav.Link>
@@ -49,7 +53,7 @@ const Menu = () => {
                     <Nav.Link href="/conquistas">Conquistas</Nav.Link>
                     <Nav.Link href="/listaObjetivos">Objetivos</Nav.Link>
                     <Nav.Link href="/aluno">Menu Aluno</Nav.Link>
-                    <NavDropdown title={jwt_decode(token).family_name} id="basic-nav-dropdown">
+                    <NavDropdown title={jwt_decode(token).nameid} id="basic-nav-dropdown">
                         <NavDropdown.Item href="/perfil">Perfil</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={ event => sair(event)}>Sair</NavDropdown.Item>
