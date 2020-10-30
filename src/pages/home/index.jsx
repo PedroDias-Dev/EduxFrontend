@@ -14,6 +14,8 @@ import img5 from '../../assets/img/5.svg'
 
 import './style.css'
 
+//HOTFIX TEST
+
 const Home = () => {
 
     let url = 'http://localhost:57332'
