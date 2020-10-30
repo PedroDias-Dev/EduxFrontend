@@ -22,4 +22,14 @@ h1 {
     margin-right: 10px;
 }
 
+.containern{
+    padding-top: 50px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+}
+
+
 

@@ -7,6 +7,7 @@ import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
 import Objetivos from './pages/adm/crudobjetivos/index';
 import Turmas from './pages/turmas';
+import Ranking from './pages/ranking';
 //import NaoEncontrada from './pages/not_found/index';
 import gerenciarAluno from './pages/gerenciarAluno/index';
 import NaoEncontrada from './pages/not_found/index';
@@ -33,8 +34,10 @@ const routing = (
       <Route path='/cadastrar' component={Cadastrar} />
       <Route path='/adm/crudobjetivos' component={Objetivos} />
       <Route path='/turmas' component={Turmas} />
-      <RotaPrivada exact path='/' component={Home} />
+      {/* <RotaPrivada exact path='/' component={Home} /> */}
+      <Route path='/' component={Home} />
       <Route path='/gerenciarAluno' component={gerenciarAluno} />
+      <Route path='/ranking' component={Ranking} />
       <Route component={NaoEncontrada} />
     </Switch>
   </Router>
