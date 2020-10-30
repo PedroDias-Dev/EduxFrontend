@@ -2,11 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-
 import Home from './pages/home';
 import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
-import Objetivos from './pages/objetivos';
+import Objetivos from './pages/adm/crudobjetivos/index';
 import Turmas from './pages/turmas';
 //import NaoEncontrada from './pages/not_found/index';
 import gerenciarAluno from './pages/gerenciarAluno/index';
@@ -30,10 +29,9 @@ const RotaPrivada = ({component : Component, ...rest}) => (
 const routing = (
   <Router>
     <Switch>
-      
       <Route path='/login'  component={Login} />
       <Route path='/cadastrar' component={Cadastrar} />
-      <Route path='/objetivos' component={Objetivos} />
+      <Route path='/adm/crudobjetivos' component={Objetivos} />
       <Route path='/turmas' component={Turmas} />
       <RotaPrivada exact path='/' component={Home} />
       <Route path='/gerenciarAluno' component={gerenciarAluno} />

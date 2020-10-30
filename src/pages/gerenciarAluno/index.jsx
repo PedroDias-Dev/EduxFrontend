@@ -7,8 +7,7 @@ import { Container, Form, Button } from 'react-bootstrap';
 const gerenciarAluno = () => {
 
     return (
-        
-          <div>
+        <div>
                 <Menu />
         
 
@@ -19,7 +18,6 @@ const gerenciarAluno = () => {
       <Rodape />
           </div>
 
-        
     )
 }
 
