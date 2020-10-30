@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Menu from '../../components/menu/index';
 import Rodape from '../../components/rodape/index';
-import { Form, Button, Table } from 'react-bootstrap';
+import { Form, Button, Table, FormControl } from 'react-bootstrap';
 import { url } from '../../utils/constants';
 import './index.css'
 
@@ -37,28 +37,38 @@ const GerenciarAluno = () => {
                 <div className="row">
 
                     <div>
-                        <h1 style={{ fontSize: "2.3em", marginLeft: "30px" }}>Gerenciar Alunos</h1>
+                        <h1 style={{ fontSize: "2.3em", marginLeft: "20px" }}>Gerenciar Alunos</h1>
                     </div>
 
                     <div className="containern">
                         <Form onSubmit={event => cadastrar(event)}>
                             <Form.Group controlId="formGerenciar">
+                            <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Cadastre o aluno</Form.Label>
                                 <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Cadastre o aluno">
                                 </Form.Control>
+                                <Form.Label for="diaa" style={{ color: "lavender", paddingTop:"15px" }}>Informe a data de nascimento do Aluno</Form.Label>
+                                <div style={{ marginBottom: "10px" }}>
+                                 <input type="date" id="diaa" name="diaa" ></input>
+                                 </div>
                             </Form.Group>
+                            
                             <Button type="submit" style={{ marginBottom: "10px" }}>Cadastrar</Button>
                         </Form>
                     </div>
 
                     <div className="container">
-                        <Form>
+                       <Form >
+                       <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Busque o aluno</Form.Label>
+                         <Form inline> 
                             <Form.Group controlId="formGerenciar">
                                 <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Nome do Aluno"></Form.Control>
-                            </Form.Group>
-
+                                <Button variant="outline-success" style={{ color: "lavender", marginLeft: "10px", }}>Search</Button>
+                            </Form.Group>   
+                        </Form>
+                        
                             <Form.Group>
 
-                                <Form.Label style={{ color: "lavender", }}>Preference</Form.Label>
+                                <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Preference</Form.Label>
 
                                 <Form inline>
 
@@ -76,7 +86,7 @@ const GerenciarAluno = () => {
                                         <option value="3">2A</option>
                                     </Form.Control>
                                     <Form.Check
-                                        style={{ color: "lavender", marginLeft: "25px", }}
+                                        style={{ color: "lavender", marginLeft: "10px", }}
                                         type="checkbox"
                                         className="my-1 mr-sm-2"
                                         id="customControlInline"

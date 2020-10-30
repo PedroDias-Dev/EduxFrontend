@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {Form, Button, Table, Card, Container, Accordion, Row, Col } from 'react-bootstrap';
+import {Form, Button, Table, Card, Container, Accordion, Row, Col, Jumbotron } from 'react-bootstrap';
 
 import Menu from '../../components/menu/index';
 import Rodape from '../../components/rodape/index';

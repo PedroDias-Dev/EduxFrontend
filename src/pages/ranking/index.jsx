@@ -9,7 +9,7 @@ const Ranking = () => {
 
 
     const [nome, setNome] = useState("");
-    
+     
 
     useEffect(() => {
         listar();
