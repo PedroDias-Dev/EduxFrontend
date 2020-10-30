@@ -31,11 +31,11 @@ const Objetivos = () => {
 
 
     return (
-            <div>
-                <Menu/>
+        <div>
+            <Menu/>
 
-        <div className="container" >
-            <div className="row">
+            <div className="container" >
+                <div className="row">
 
                 <div>
                     <h1 style={{ fontSize: "2.3em", marginLeft: "30px" }}>Objetivos</h1>
@@ -137,7 +137,7 @@ const Objetivos = () => {
             <Rodape/>
         </div>
     </div>
-    )
+    );
 }
 
 export default Objetivos;
