@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
+<<<<<<< HEAD
 import {Form, Button, Table, Card, Container, Accordion, Row, Col, Jumbotron } from 'react-bootstrap';
+=======
+import {Form, Button, Card, Container, Accordion, Row, Col, Jumbotron } from 'react-bootstrap';
+>>>>>>> 4daa72cced1df5ec097e477c96f59b1c2c9c4f12
 
 import Menu from '../../components/menu/index';
 import Rodape from '../../components/rodape/index';
 
+// import logo from '../../assets/img/logo_2.png'
+
 const Home = () => {
 
-    let url = 'hhtp://localhost:57332'
+    let url = 'http://localhost:57332'
 
     const [ id, setId] = useState(0);
     const [nome, setNome] = useState('');
@@ -141,82 +147,92 @@ const Home = () => {
             <Container>
 
             <Jumbotron>
-                <h1>Home</h1>
-                <p>
+                <div style={{ display : 'flex', alignItems: 'center' }}>
 
-                </p>
-                <p>
-                    <Button variant="primary">Learn more</Button>
-                </p>
+                    <h1 style={{color : "black"}}>Projeto EduX</h1>
+                    {/* <img src={logo} alt='Logo EduX' style={{ width : '200px', marginLeft : '2em'}} /> */}
+                    
+                </div>
+            <p>
+                
+            </p>
+            <p>
+                <a href="#"><Button variant="primary">Saiba mais!</Button></a>
+            </p>
             </Jumbotron>
 
-            <Accordion defaultActiveKey="0" style={{ marginTop : '2em'}}>
-                <Card>
-                    <Card.Header>
-                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                        Crie um post aqui!
-                        </Accordion.Toggle>
-                    </Card.Header>
-                    <Accordion.Collapse eventKey="0">
-                        <Card.Body>
-                            <Form onSubmit={event => salvar(event)}>
-                                <Form.Group controlId="formBasicNome">
-                                    <Form.Label>Nome</Form.Label>
-                                    <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Nome do evento"></Form.Control>
-                                </Form.Group>
-                                <Form.Group controlId="formBasicLink">
-                                    <Form.Label>Link (Opcional) </Form.Label>
-                                    <Form.Control type="text" value={link} onChange={event => setLink(event.target.value)} placeholder="http://"></Form.Control>
-                                </Form.Group>
-                                <Form.Group controlId="formBasicCurso">
-                                    <Form.Label>Curso</Form.Label>
-                                    <Form.Control as="select" size="lg" custom defaultValue={cursoId} onChange={event => setCursoId(event.target.value)} >
-                                        <option value={0}>Selecione</option>
-                                        {
-                                            cursos.map((item, index) => {
-                                                return(
-                                                    <option value={item.id}>{item.nome}</option>
-                                                )
-                                            })
-                                        }
-                                    </Form.Control>
-                                </Form.Group>
-                                
-                                <Form.Group controlId="formBasicUrl">
-                                    <Form.Label>Descrição</Form.Label>
-                                    <Form.Control as="textarea" rows={3} value={descricao} onChange={event => setDescricao(event.target.value)}/>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.File id="fileCategoria" label="Imagem do evento" onChange={event => { uploadFile(event)}} />
-                                    {urlImagem && <img src={urlImagem} style={{ width : '160px'}} />}
-                                </Form.Group>
-                                <Button type="submit">Salvar</Button>
-                            </Form>
-                        </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-            </Accordion>
+            {/* <Jumbotron> */}
 
-            <Container>
-                    <Row>
-                        {
-                            posts.map((item, index) => {
-                                return (
-                                    <Col xs='4'>
-                                        <Card style={{ width: '18rem' }}>
-                                        <Card.Img variant="top" src={item.urlImagem} />
-                                        <Card.Body>
-                                            <Card.Title>{item.nome}</Card.Title>
-                                            <Card.Text>{item.descricao}</Card.Text>
-                                            <a href={item.link} target='_blank' >Ir para o evento</a>
-                                        </Card.Body>
-                                        </Card>
-                                    </Col>
-                                )
-                            })
-                        }
-                    </Row>
-                </Container>
+                <Accordion defaultActiveKey="1" style={{ marginTop : '2em'}}>
+                    <Card>
+                        <Card.Header>
+                            <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                            Crie um post aqui!
+                            </Accordion.Toggle>
+                        </Card.Header>
+                        <Accordion.Collapse eventKey="0">
+                            <Card.Body>
+                                <Form onSubmit={event => salvar(event)}>
+                                    <Form.Group controlId="formBasicNome">
+                                        <Form.Label>Título</Form.Label>
+                                        <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Titulo do post"></Form.Control>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicLink">
+                                        <Form.Label>Link (Opcional) </Form.Label>
+                                        <Form.Control type="text" value={link} onChange={event => setLink(event.target.value)} placeholder="http://"></Form.Control>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicCurso">
+                                        <Form.Label>Curso</Form.Label>
+                                        <Form.Control as="select" size="lg" custom defaultValue={cursoId} onChange={event => setCursoId(event.target.value)} >
+                                            <option value={0}>Selecione</option>
+                                            {
+                                                cursos.map((item, index) => {
+                                                    return(
+                                                        <option value={item.id}>{item.nome}</option>
+                                                    )
+                                                })
+                                            }
+                                        </Form.Control>
+                                    </Form.Group>
+                                    
+                                    <Form.Group controlId="formBasicUrl">
+                                        <Form.Label>Descrição</Form.Label>
+                                        <Form.Control as="textarea" rows={3} value={descricao} onChange={event => setDescricao(event.target.value)}/>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.File id="fileCategoria" label="Imagem do post" onChange={event => { uploadFile(event)}} />
+                                        {urlImagem && <img src={urlImagem} style={{ width : '160px'}} />}
+                                    </Form.Group>
+                                    <Button type="submit">Salvar</Button>
+                                </Form>
+                            </Card.Body>
+                        </Accordion.Collapse>
+                    </Card>
+                </Accordion>
+
+                <Jumbotron style={{ marginTop : '1em'}}>
+                    <h3 style={{color : 'black'}}>Timeline:</h3>
+                        <Row>
+                            {
+                                posts.map((item, index) => {
+                                    return (
+                                        <Col xs='4'>
+                                            <Card style={{ width: '18rem' }}>
+                                            <Card.Img variant="top" src={item.urlImagem} />
+                                            <Card.Body>
+                                                <Card.Title>{item.nome}</Card.Title>
+                                                <Card.Text>{item.descricao}</Card.Text>
+                                            </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    )
+                                })
+                            }
+                        </Row>
+
+                        <h6>Aparentemente não há nenhum post... Tente novamente mais tarde.</h6>
+                </Jumbotron>
+            {/* </Jumbotron> */}
 
             </Container>
             <Rodape />
