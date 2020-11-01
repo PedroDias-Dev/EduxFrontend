@@ -104,7 +104,7 @@ const CrudGerenciar  = () => {
                     </div>
 
                     <div className="containern">
-                        <Form onSubmit={event => salvar(event)}>
+                        <Form onSubmit={event => cadastrar(event)}>
                             <Form.Group controlId="formGerenciar">
                             <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Cadastre o aluno</Form.Label>
                                 <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Cadastre o aluno">

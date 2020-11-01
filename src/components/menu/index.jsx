@@ -29,7 +29,7 @@ const Menu = () => {
                 </Nav>
             );
             // jwt_decode(token).role
-        } else if(tokenProfessor  === 'Professor'){
+        } else if(jwt_decode(token).role  === 'Professor'){
             return (
                 <Nav>
                     {/* <Nav.Link href="/dicas">Dicas</Nav.Link>

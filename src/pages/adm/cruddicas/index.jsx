@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import jwt_decode from 'jwt-decode';
 
 import {Form, Button, Card, Container, Table, Jumbotron } from 'react-bootstrap';
 
@@ -9,12 +10,17 @@ import './style.css'
 
 const Dicas = () => {
 
-    let url = 'http://localhost:55718/api/Dica/';
+    // let url = 'http://localhost:55718/api/Dica';
+    let url = 'https://5f7f873fd6aabe00166f06be.mockapi.io/nyous/dicas'
 
     const [idDica, setIdDica] = useState(0);
     const [texto, setTexto] = useState('');
     const [urlImagem, setUrlImagem] = useState('');
     const [ dicas, setDicas] = useState([]);
+
+    //TOKEN JWT
+    const token = localStorage.getItem('token-edux');
+    jwt_decode(token).role = 'Professor';
 
     useEffect(() => {
         listar();
@@ -26,7 +32,6 @@ const Dicas = () => {
         })
         .then(response => response.json())
         .then(dados => {
-            console.log(dados)
 
             limparCampos();
 
@@ -58,6 +63,7 @@ const Dicas = () => {
         .then(response => response.json())
         .then(dados => {
             alert('Dica salva com sucesso!');
+            console.log(dica)
 
             listar();
         })
@@ -86,19 +92,17 @@ const Dicas = () => {
     const editar = (event) => {
         event.preventDefault();
 
-        console.log(event.target)
-
-        fetch(`${url}${event.target.value}`, {
+        fetch(`${url}/${event.target.value}`, {
             method : 'GET',
-            headers : {
-                'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
-            }
+            // headers : {
+            //     'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
+            // }
         })
         .then(response => response.json())
         .then(dado => {
-            setIdDica(dado.data.idDica);
-            setTexto(dado.data.texto);
-            setUrlImagem(dado.data.urlImagem);
+            setIdDica(dado.idDica);
+            setTexto(dado.texto);
+            setUrlImagem(dado.urlImagem);
         })
     }
 
@@ -107,11 +111,11 @@ const Dicas = () => {
 
         console.log(event.target)
 
-        fetch(url + event.target,{
+        fetch(`${url}/${event.target.value}`,{
             method : 'DELETE',
-            headers : {
-                'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
-            }
+            // headers : {
+            //     'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
+            // }
         })
         .then(response => response.json())
         .then(dados => {
@@ -171,8 +175,8 @@ const Dicas = () => {
                                             <td><img src={item.urlImagem} style={{ width : '120px'}}/></td>
                                             <td>{item.texto}</td>
                                             <td>
-                                                <button variant="warning" value={item.id} onClick={event => editar(event)} >Editar</button>
-                                                <Button variant="danger" value={item.id} onClick={event => remover(event)} style={{ marginLeft : '40px'}}>Remover</Button>
+                                                <Button variant="warning" value={item.idDica} onClick={event => editar(event)} >Editar</Button>
+                                                <Button variant="danger" value={item.idDica} onClick={event => remover(event)} style={{ marginLeft : '40px'}}>Remover</Button>
                                             </td>
                                         </tr>
                                     )
