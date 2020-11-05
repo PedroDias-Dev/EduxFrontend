@@ -38,7 +38,7 @@ const routing = (
       <Route path='/turmas' component={Turmas} />
       {/* <RotaPrivada exact path='/' component={Home} />
       <Route path='/' component={Home} /> */}
-      <Route path='/gerenciarAluno' component={gerenciarAluno} />
+      {/* <Route path='/gerenciarAluno' component={gerenciarAluno} /> */}
       <Route path='/ranking' component={Ranking} />
       <Route component={NaoEncontrada} />
     </Switch>
