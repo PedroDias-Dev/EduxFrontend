@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
-import {Form, Button, Card, Container, Accordion, Row, Col, Jumbotron, Carousel } from 'react-bootstrap';
+import {Form, Button, Card, Container, Accordion, Row, Jumbotron, Carousel, Overlay, Tooltip } from 'react-bootstrap';
+
+import  jwt_decode  from 'jwt-decode';
 
 import Menu from '../../components/menu/index';
 import Rodape from '../../components/rodape/index';
@@ -16,18 +18,42 @@ import './style.css'
 
 //HOTFIX TEST
 
+
+
 const Home = () => {
 
-    let url = 'http://localhost:57332'
+    //let url = 'http://localhost:57332'
+    let url = 'https://5f7f873fd6aabe00166f06be.mockapi.io/nyous/edux'
 
     const [ id, setId] = useState(0);
     const [nome, setNome] = useState('');
     const [link, setLink] = useState('');
     const [urlImagem, setUrlImagem] = useState('');
     const [descricao, setDescricao] = useState('');
+    const [nomeUser, setNomeUser] = useState('');
     const [posts, setPost] = useState([]);
     const [cursoId, setCursoId] = useState('');
     const [cursos, setCursos] = useState([]);
+
+    // NAME POLICIES
+    const [show, setShow] = useState(false);
+    const target = useRef(null);
+
+    //AUTOMATIC SCROLL
+    const myRef = useRef(null)
+    const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop)
+    const executeScroll = () => scrollToRef(myRef)
+
+    //NOME DE USUARIO
+    const token = localStorage.getItem('token-edux');
+
+    const SetNomeUser = () =>{
+        //const token = localStorage.getItem('token-edux');
+        setNomeUser((jwt_decode(token).nameid));
+
+        console.log(nomeUser);
+    }
+
 
     useEffect(() => {
         listarPosts();
@@ -37,21 +63,24 @@ const Home = () => {
         fetch('http://localhost:62602/api/Cursos')
             .then(response => response.json())
             .then(data => {
-                setCursos(data.data)
+                setCursos(data)
                 limparCampos();
             })
             .catch(err => console.error(err));
     }
 
     const listarPosts = () => {
-        fetch('http://localhost:62602/api/')
-            .then(response => response.json())
-            .then(data => {
-                setPost(data.data)
-                limparCampos();
-            })
-            .catch(err => console.error(err));
-    }
+        fetch(url, {
+          method: 'GET'
+        })
+        .then(response => response.json())
+        .then(dados => {
+          setPost(dados);
+
+          console.log(dados);
+        })
+        .catch(err => console.log(err))
+      }
 
     const limparCampos = () => {
         setId(0);
@@ -59,6 +88,7 @@ const Home = () => {
         setLink('');
         setUrlImagem('');
         setDescricao('');
+        setNomeUser('');
         setCursoId(0);
     }
 
@@ -81,25 +111,30 @@ const Home = () => {
 
     }
 
+    
+
     const salvar = (event) => {
         event.preventDefault();
+
+        SetNomeUser();
 
         const post = {
             nome : nome,
             urlImagem :urlImagem,
             link : link,
-            descricao : descricao
+            descricao : descricao,
+            nomeUser: nomeUser
         }
 
         let method = (id === 0 ? 'POST' : 'PUT');
-        let urlRequest = (id === 0 ? `${url}/Eventos` : `${url}/Eventos/${id}`);
+        let urlRequest = (id === 0 ? `${url}` : `${url}/${id}`);
 
         fetch(urlRequest, {
             method : method,
             body : JSON.stringify(post),
             headers : {
-                'content-type' : 'application/json',
-                'authorization' : 'Bearer' + localStorage.getItem('token-edux')
+                'content-type' : 'application/json'
+                // 'authorization' : 'Bearer' + localStorage.getItem('token-edux')
             }
         })
         .then(response => response.json())
@@ -113,29 +148,33 @@ const Home = () => {
 
     const editar = (event) => {
         event.preventDefault();
+        executeScroll();
 
-        fetch(`${url}/Eventos/${event.target.value}`, {
+        console.log('A')
+
+        fetch(`${url}/${event.target.value}`, {
             method : 'GET'
         })
         .then(response => response.json())
         .then(dado => {
             console.log(dado);
-            setId(dado.data.id);
-            setNome(dado.data.nome);
-            setLink(dado.data.link);
-            setUrlImagem(dado.data.urlImagem);
-            setDescricao(dado.data.descricao);
+
+            setId(dado.id);
+            setNome(dado.nome);
+            setLink(dado.link);
+            setUrlImagem(dado.urlImagem);
+            setDescricao(dado.descricao);
         })
     }
 
     const remover = (event) => {
         event.preventDefault();
 
-        fetch(`${url}/Eventos/${event.target.value}`,{
+        fetch(`${url}/${event.target.value}`,{
             method : 'DELETE',
-            headers : {
-                'authorization' : 'Bearer' + localStorage.getItem('token-edux')
-            }
+            // headers : {
+            //     'authorization' : 'Bearer' + localStorage.getItem('token-edux')
+            // }
         })
         .then(response => response.json())
         .then(dados => {
@@ -145,32 +184,15 @@ const Home = () => {
         })
     }
 
-    const listarHTMLPosts = () => {
-        try{
-        let number = 0;
-        posts.map((item, index) => {
-            let number = number + 1;
-            if (number === 0){
-                return(
-                    <h6>Aparentemente não há nenhum post... Tente novamente mais tarde.</h6>
-                );
-            }
-            return (
-                <Col xs='4'>
-                    <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={item.urlImagem} />
-                    <Card.Body>
-                        <Card.Title>{item.nome}</Card.Title>
-                        <Card.Text>{item.descricao}</Card.Text>
-                    </Card.Body>
-                    </Card>
-                </Col>
-            )
-        })
-        }catch(err){
+    function EditarRemover(item){
+
+        if((jwt_decode(token).nameid) === item.nomeUser){
             return(
-                <h6>Aparentemente não há nenhum post... Tente novamente mais tarde.</h6>
-            );
+                <div style={{justifyContent: 'space-around'}}>
+                <Button type="button" variant="warning" value={item.id} onClick={ event => editar(event)}>Editar</Button>
+                <Button type="button" variant="danger" value={item.id} style={{ marginLeft : '30px'}} onClick={ event => remover(event)}>Remover</Button>
+                </div>
+        )
         }
     }
 
@@ -230,7 +252,7 @@ const Home = () => {
         }else {
             return (
                 <div>
-                    <Accordion defaultActiveKey="1" style={{ marginTop : '2em'}}>
+                    <Accordion ref={myRef} defaultActiveKey="1" style={{ marginTop : '2em'}}>
                         <Card>
                             <Card.Header>
                                 <Accordion.Toggle as={Button} variant="link" eventKey="0">
@@ -241,6 +263,18 @@ const Home = () => {
                                 <Card.Body>
                                     <Form onSubmit={event => salvar(event)}>
                                         <Form.Group controlId="formBasicNome">
+                                            <a ref={target} onClick={() => setShow(!show)}>
+                                                <Form.Label >Nome de usuario: {jwt_decode(token).nameid}</Form.Label>
+                                            </a>
+                                            <Overlay target={target.current} show={show} placement="right">
+                                                {(props) => (
+                                                <Tooltip id="overlay-example" {...props}>
+                                                    Conforme os termos e condições, seu nome de usuário aparece para outros usuários
+                                                </Tooltip>
+                                                )}
+                                            </Overlay>
+                                        </Form.Group>
+                                        <Form.Group controlId="formBasicNome">
                                             <Form.Label>Título</Form.Label>
                                             <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Titulo do post"></Form.Control>
                                         </Form.Group>
@@ -248,7 +282,7 @@ const Home = () => {
                                             <Form.Label>Link (Opcional) </Form.Label>
                                             <Form.Control type="text" value={link} onChange={event => setLink(event.target.value)} placeholder="http://"></Form.Control>
                                         </Form.Group>
-                                        <Form.Group controlId="formBasicCurso">
+                                        {/* <Form.Group controlId="formBasicCurso">
                                             <Form.Label>Curso</Form.Label>
                                             <Form.Control as="select" size="lg" custom defaultValue={cursoId} onChange={event => setCursoId(event.target.value)} >
                                                 <option value={0}>Selecione</option>
@@ -260,7 +294,7 @@ const Home = () => {
                                                     })
                                                 }
                                             </Form.Control>
-                                        </Form.Group>
+                                        </Form.Group> */}
                                         
                                         <Form.Group controlId="formBasicUrl">
                                             <Form.Label>Descrição</Form.Label>
@@ -279,13 +313,31 @@ const Home = () => {
 
                     <Jumbotron style={{ marginTop : '1em'}}>
                         <h3 style={{color : 'black'}}>Timeline:</h3>
-                            <Row>
-                                
-                                { listarHTMLPosts() }
-                            
+                        {/* <div style={{display :'flex', justifyContent: 'space-around', backgroundColor: '#F1FFFA'}}> */}
+                            <Row style={{justifyContent: 'space-around', backgroundColor: '#e9ecef'}}>
+                                { 
+                                    posts.map((item, index) => {
+                                        return (
+                                            <Card style={{ width: '18rem', height : '15em', marginTop: '2em', marginBottom: '2em' }}>
+                                            {/* <Card.Img variant="top" src={item.urlImagem} /> */}
+                                            <Card.Body>
+                                                <p>{item.nomeUser}</p>
+                                                <Card.Title>{item.nome}</Card.Title>
+                                                <Card.Text>
+                                                {item.descricao}
+                                                
+                                                </Card.Text>
+                                                <Button variant="primary" style={{width: '100%'}}>Go somewhere</Button>
+                                                {
+                                                    EditarRemover(item)
+                                                }
+                                            </Card.Body>
+                                            </Card>
+                                        )
+                                    })
+                                }
+                        {/* </div> */}
                             </Row>
-
-                            <h6>Aparentemente não há nenhum post... Tente novamente mais tarde.</h6>
 
                         
                     </Jumbotron>

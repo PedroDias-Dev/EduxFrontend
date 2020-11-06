@@ -7,6 +7,9 @@ import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
 import Objetivos from './pages/objetivos';
 import CrudObjetivos from './pages/adm/crudobjetivos/index';  
+import Objetivos from './pages/adm/crudobjetivos/index';
+import Dicas from './pages/adm/cruddicas/index';
+import Turmas from './pages/turmas';
 import Ranking from './pages/ranking';
 import gerenciarAluno from './pages/gerenciarAluno/index';
 import NaoEncontrada from './pages/not_found/index';
@@ -35,6 +38,10 @@ const routing = (
       <Route path='/adm/crudobjetivos' component={CrudObjetivos} />
       <RotaPrivada exact path='/' component={Home} />
       {/* <Route path='/' component={Home} /> */}
+      <Route path='/adm/dicas' component={Dicas} />
+      <Route path='/turmas' component={Turmas} />
+      {/* <RotaPrivada exact path='/' component={Home} />
+      <Route path='/' component={Home} /> */}
       <Route path='/gerenciarAluno' component={gerenciarAluno} />
       <Route path='/ranking' component={Ranking} />
       <Route component={NaoEncontrada} />
