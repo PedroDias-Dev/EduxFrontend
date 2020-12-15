@@ -30,7 +30,7 @@ const GerenciarAluno = () => {
 
     return (
 
-        <div>
+        <div className= "tudo">
             <Menu />
 
             <div className="container" >
@@ -56,13 +56,17 @@ const GerenciarAluno = () => {
                         </Form>
                     </div>
 
-                    <div className="container">
+                    </div>
+
+                    <div className="containerb">
                        <Form >
                        <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Busque o aluno</Form.Label>
                          <Form inline> 
                             <Form.Group controlId="formGerenciar">
-                                <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Nome do Aluno"></Form.Control>
+                                <Form.Control type="text"  placeholder="Nome do Aluno"></Form.Control>
                                 <Button variant="outline-success" style={{ color: "lavender", marginLeft: "10px", }}>Search</Button>
+                                    
+
                             </Form.Group>   
                         </Form>
                         
@@ -153,9 +157,9 @@ const GerenciarAluno = () => {
                                 </tr>
                             </tbody>
                         </Table>
-                    </div>
-                </div>
+                
                 <Rodape />
+                 </div>
             </div>
         </div>
 
