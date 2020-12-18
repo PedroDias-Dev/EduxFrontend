@@ -7,7 +7,7 @@ import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
 import Objetivos from './pages/objetivos';
 import CrudObjetivos from './pages/adm/crudobjetivos/index';  
-import Objetivos from './pages/adm/crudobjetivos/index';
+// import Objetivos from './pages/adm/crudobjetivos/index';
 import Dicas from './pages/adm/cruddicas/index';
 import Turmas from './pages/turmas';
 import Ranking from './pages/ranking';
