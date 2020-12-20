@@ -6,7 +6,16 @@ import { url } from '../../utils/constants';
 import './index.css'
 
 const GerenciarAluno = () => {
-
+    const [alunos, setAlunos] = useState([
+        {
+            nome: "André",
+            dataNascimento: ""
+        },
+        {
+            nome: "Alice",
+            dataNascimento: ""
+        },
+    ])
 
     const [nome, setNome] = useState("");
 
@@ -23,145 +32,61 @@ const GerenciarAluno = () => {
             .catch(err => console.error(err));
     }
 
-
-    const cadastrar = (event) => {
-        event.prevent.default();
+    const CorpoTabela = ({nome}) => {
+        alunos.map((aluno, index) => {
+            if(nome!=""&&aluno.nome===nome) {
+                return (
+                    <tr key={index}>
+                        <td>{index+1}</td>
+                        <td>{aluno.nome}</td>
+                        <td>{aluno.dataNascimento}</td>
+                    </tr>
+                )
+            }
+            else if(nome==="") {
+                return (
+                    <tr key={index}>
+                        <td>{index+1}</td>
+                        <td>{aluno.nome}</td>
+                        <td>{aluno.dataNascimento}</td>
+                    </tr>
+                )
+            }
+            return("")
+        })
     }
 
     return (
-
-        <div>
+        <div className= "tudo">
             <Menu />
-
             <div className="container" >
                 <div className="row">
-
                     <div>
                         <h1 style={{ fontSize: "2.3em", marginLeft: "20px" }}>Gerenciar Alunos</h1>
                     </div>
-
-                    <div className="containern">
-                        <Form onSubmit={event => cadastrar(event)}>
-                            <Form.Group controlId="formGerenciar">
-                            <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Cadastre o aluno</Form.Label>
-                                <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Cadastre o aluno">
-                                </Form.Control>
-                                <Form.Label for="diaa" style={{ color: "lavender", paddingTop:"15px" }}>Informe a data de nascimento do Aluno</Form.Label>
-                                <div style={{ marginBottom: "10px" }}>
-                                 <input type="date" id="diaa" name="diaa" ></input>
-                                 </div>
-                            </Form.Group>
-                            
-                            <Button type="submit" style={{ marginBottom: "10px" }}>Cadastrar</Button>
-                        </Form>
-                    </div>
-
-                    <div className="container">
-                       <Form >
-                       <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Busque o aluno</Form.Label>
-                         <Form inline> 
-                            <Form.Group controlId="formGerenciar">
-                                <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Nome do Aluno"></Form.Control>
-                                <Button variant="outline-success" style={{ color: "lavender", marginLeft: "10px", }}>Search</Button>
-                            </Form.Group>   
-                        </Form>
-                        
-                            <Form.Group>
-
-                                <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Preference</Form.Label>
-
-                                <Form inline>
-
-
-                                    <Form.Control
-
-                                        as="select"
-                                        className="selecao"
-                                        id="inlineFormCustomSelectPref"
-                                        custom
-                                    >
-                                        <option value="0">Turmas...</option>
-                                        <option value="1">1A</option>
-                                        <option value="2">1B</option>
-                                        <option value="3">2A</option>
-                                    </Form.Control>
-                                    <Form.Check
-                                        style={{ color: "lavender", marginLeft: "10px", }}
-                                        type="checkbox"
-                                        className="my-1 mr-sm-2"
-                                        id="customControlInline"
-                                        label="Remember my preference"
-                                        custom
-
-                                    />
-                                    <Button type="submit" className="my-1">
-                                        Submit
-                                    </Button>
-
-                                </Form>
-
-                            </Form.Group>
-
-                        </Form>
-                    </div>
-
-                    <div className="col">
-                        <Table striped bordered variant="dark">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Nome</th>
-                                    <th>Data de nascimento</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>André</td>
-                                    <td>11/02/2006</td>
-
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Alice</td>
-                                    <td>16/04/2005</td>
-
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Pedro</td>
-                                    <td>19/08/2006</td>
-
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Pedro</td>
-                                    <td>09/10/2006</td>
-
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Pedro</td>
-                                    <td>14/09/2005</td>
-
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>Pedro</td>
-                                    <td>28/06/2005</td>
-
-                                </tr>
-                            </tbody>
-                        </Table>
-                    </div>
                 </div>
-                <Rodape />
+                <div className="containerb">
+                    <Form.Label style={{ color: "lavender", paddingTop:"15px" }}></Form.Label>
+                    <Form.Group controlId="formGerenciar">
+                        <Form.Control input id="filtro" type="text" placeholder="Filtrar" value={nome} onChange={event => setNome(event.target.value)}></Form.Control>
+                    </Form.Group>
+                    <Table striped bordered variant="dark">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nome</th>
+                                <th>Data de nascimento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <CorpoTabela nome={nome}/>
+                        </tbody>
+                    </Table>
+                    <Rodape />
+                </div>
             </div>
         </div>
-
-
     )
 }
-
 
 export default GerenciarAluno;

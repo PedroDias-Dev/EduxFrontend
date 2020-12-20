@@ -6,6 +6,10 @@ import Home from './pages/home';
 import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
 import CrudObjetivos from './pages/adm/crudobjetivos/index';  
+<<<<<<< HEAD
+=======
+// import Objetivos from './pages/adm/crudobjetivos/index';
+>>>>>>> 3c3cd49971596332711d1ae1fcfe916b500c7963
 import Dicas from './pages/adm/cruddicas/index';
 import Turmas from './pages/turmas';
 import Ranking from './pages/ranking';
