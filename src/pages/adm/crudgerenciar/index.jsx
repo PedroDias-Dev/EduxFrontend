@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Menu from '../../../components/menu/index';
 import Rodape from '../../../components/rodape/index';
-import { Form, Container, Button, Table, Card } from "react-bootstrap";
+import { Form, Container, Button, Table, Card, Jumbotron } from "react-bootstrap";
 import { url } from "../../../utils/constants";
 
 const Gerenciar = () => {
-    const [idGeren, setIdGeren] = useState(0);
+    const [Geren, setGeren] = useState(0);
     const [nome, setNome] = useState("");
-    const [data, setData] = useState("");
+    const [ data, setData] = useState("");
 
     useEffect(() => {
         listar();
@@ -31,8 +31,8 @@ const Gerenciar = () => {
         }
 
 
-        let method = (id === 0 ? 'POST' : 'PUT');
-        let urlRequest = (id === 0 ? `${url}/gerenciar` : `${url}/gerenciar/${id}`);
+        let method = (Geren === 0 ? 'POST' : 'PUT');
+        let urlRequest = (Geren === 0 ? `${url}/gerenciar` : `${url}/gerenciar/${Geren}`);
 
         fetch(urlRequest, {
             method: method,
@@ -62,7 +62,7 @@ const Gerenciar = () => {
         })
         .then(response => response.json())
         .then(dado => {
-            setIdGeren(dado.idGeren);
+            setGeren(dado.Geren);
             setNome(dado.nome);
             setData(dado.data);
         })
@@ -88,7 +88,7 @@ const Gerenciar = () => {
     }
 
     const limparCampos = () => {
-        setIdGeren(0);
+        setGeren(0);
         setNome('');
         setData('');
     }
@@ -111,12 +111,12 @@ const Gerenciar = () => {
                 <Card.Body>
                      
                 <Form onSubmit = {event => salvar(event)}>
-                    <Form.Group controlId="forNome">
+                    <Form.Group controlid="forNome">
                      <Form.Label>Nome</Form.Label>
                      <Form.Control type="text" value= {nome} onChange={event => setNome(event.target.value)} />
                     </Form.Group>
                     
-                    <Form.Group controlId="forNome">
+                    <Form.Group controlid="forNome">
                      <Form.Label>Data</Form.Label>
                      <Form.Control type="text" value= {data} onChange={event => setData(event.target.value)}> </Form.Control>
                     </Form.Group>
@@ -132,7 +132,7 @@ const Gerenciar = () => {
                  <Card.Body>
 
                  <Form>
-                            <Form.Group controlId="formNome">
+                            <Form.Group controlid="formNome">
                                 <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Nome do Aluno"></Form.Control>
                             </Form.Group>
 
@@ -152,13 +152,13 @@ const Gerenciar = () => {
                                 <th>#</th>
                                 <th>Nome</th>
                                 <th>Data</th>
-                                {/* <th>Id</th> */}
+                                {/* <th>id</th> */}
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                gerenciar.map((item, index) => {
+                                Geren.map((item, index) => {
                                     return (
                                         <tr key={index}>
                                             <td>{item.nome}</td>
