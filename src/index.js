@@ -5,9 +5,11 @@ import reportWebVitals from './reportWebVitals';
 import Home from './pages/home';
 import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
+
 import Objetivos from './pages/adm/crudobjetivos/index';
 import DicasAdm from './pages/adm/cruddicas/index';
 import Gerenciar from './pages/adm/crudgerenciar/index';
+
 import Turmas from './pages/turmas';
 import Dicas from './pages/dicas';
 import Ranking from './pages/ranking';
@@ -50,9 +52,10 @@ const routing = (
       <Route path='/login'  component={Login} />
       <Route path='/cadastrar' component={Cadastrar} />
       <RotaPrivadaAdmin path='/adm/crudobjetivos' component={Objetivos} />
-      {/* <RotaPrivadaAdmin path='/adm/dicas' component={DicasAdm} /> */}
-      <Route path='/adm/dicas' component={DicasAdm} />
+      <RotaPrivadaAdmin path='/adm/dicas' component={DicasAdm} />
       <RotaPrivadaAdmin path='/adm/alunos' component={Gerenciar} />
+      <RotaPrivada exact path='/' component={Home} />
+      <Route path='/adm/dicas' component={Dicas} />
       <Route path='/turmas' component={Turmas} />
       <Route path='/dicas' component={Dicas} />
       <RotaPrivada exact path='/' component={Home} />
