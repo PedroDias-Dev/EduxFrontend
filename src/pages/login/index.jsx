@@ -18,7 +18,7 @@ const Login = () => {
     const logar = (event) => {
         event.preventDefault();
 
-        fetch('http://localhost:55718/api/Login',{
+        fetch('http://localhost:5000/api/Login',{
             method : 'POST',
             body : JSON.stringify({
                 email : email,
@@ -41,7 +41,7 @@ const Login = () => {
             let usuario = jwt_decode(data.token);
 
             if(usuario.role === 'Professor'){
-                history.push('/professor');
+                history.push('/');
             }
             else{
                 history.push('/');

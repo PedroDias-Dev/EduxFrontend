@@ -21,7 +21,7 @@ const Cadastrar = () => {
     const registrar = (event) => {
         event.preventDefault();
 
-        fetch('http://localhost:55718/api/Usuario/register',{
+        fetch('http://localhost:55718/api/Usuario/',{
             method : 'POST',
             body : JSON.stringify({
                 nome : nome,
@@ -36,15 +36,16 @@ const Cadastrar = () => {
         .then(response => {
             if(response.ok){
                 alert('Tudo certo! Seu perfil foi cadastrado com sucesso!')
+                history.push('/login');
                 return response.json();
             }
 
             alert('Ocorreu um erro ao registrar. Tente novamente mais tarde.');
         })
         .then(data => {
-            localStorage.setItem('token-edux', data.token);
+            // localStorage.setItem('token-edux', data.token);
 
-            let usuario = jwt_decode(data.token);
+            // let usuario = jwt_decode(data.token);
 
             history.push('/login');
         })
@@ -76,15 +77,6 @@ const Cadastrar = () => {
                         <Form.Label>Senha</Form.Label>
                         <Form.Control type="password" value={senha} onChange={ event => setSenha(event.target.value)} placeholder="Senha"  required/>
                     </Form.Group>
-
-                    {/* <Form.Group controlId="formBasicCategoria">
-                                <Form.Label>Tipo</Form.Label>
-                                <Form.Control as="select" size="lg" custom onChange={event => setPermissao(event.target.value)} >
-                                    <option value={1}>Professor</option>
-                                    <option value={2}>Aluno</option>
-
-                                </Form.Control>
-                    </Form.Group> */}
 
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Perfil </Form.Label>

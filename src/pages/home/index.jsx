@@ -30,6 +30,10 @@ const Home = () => {
     const [link, setLink] = useState('');
     const [urlImagem, setUrlImagem] = useState('');
     const [descricao, setDescricao] = useState('');
+    const [curtidas, setCurtidas] = useState(0);
+
+    const [idUsuario, setIdUsuario] = useState(0);
+
     const [nomeUser, setNomeUser] = useState('');
     const [posts, setPost] = useState([]);
     const [cursoId, setCursoId] = useState('');
@@ -38,6 +42,30 @@ const Home = () => {
     // NAME POLICIES
     const [show, setShow] = useState(false);
     const target = useRef(null);
+
+    //CONQUISTAS
+    const [postagensTotais, setPostagensTotais] = useState('');
+    const [curtidasTotais, setCurtidasTotais] = useState('');
+
+    //TOKEN JWT
+    const tokenDecode = () => {
+        const token = localStorage.getItem('token-edux')
+
+        const IdUsuario = jwt_decode(token).id;
+
+        // const PostagensTotais = jwt_decode(token).postagensTotais;
+        // console.log(PostagensTotais)
+        // const CurtidasTotais = jwt_decode(token).curtidasTotais;
+
+        setIdUsuario(IdUsuario);
+
+        // setPostagensTotais(PostagensTotais);
+        // setCurtidasTotais(CurtidasTotais);
+
+        // const token = localStorage.getItem('token-edux');
+        jwt_decode(token).role = 'Professor';
+        // console.log(jwt_decode(token))
+    }
 
     //AUTOMATIC SCROLL
     const myRef = useRef(null)
@@ -48,7 +76,6 @@ const Home = () => {
     const token = localStorage.getItem('token-edux');
 
     const SetNomeUser = () =>{
-        //const token = localStorage.getItem('token-edux');
         setNomeUser((jwt_decode(token).nameid));
 
         console.log(nomeUser);
@@ -57,17 +84,9 @@ const Home = () => {
 
     useEffect(() => {
         listarPosts();
+        tokenDecode();
+        SetNomeUser();
     }, []);
-
-    const listarCursos = () => {
-        fetch('http://localhost:62602/api/Cursos')
-            .then(response => response.json())
-            .then(data => {
-                setCursos(data)
-                limparCampos();
-            })
-            .catch(err => console.error(err));
-    }
 
     const listarPosts = () => {
         fetch(url, {
@@ -77,7 +96,7 @@ const Home = () => {
         .then(dados => {
           setPost(dados);
 
-          console.log(dados);
+        //   console.log(dados);
         })
         .catch(err => console.log(err))
       }
@@ -117,13 +136,15 @@ const Home = () => {
         event.preventDefault();
 
         SetNomeUser();
+        
 
         const post = {
             nome : nome,
             urlImagem :urlImagem,
             link : link,
             descricao : descricao,
-            nomeUser: nomeUser
+            nomeUser: nomeUser,
+            curtidas: curtidas
         }
 
         let method = (id === 0 ? 'POST' : 'PUT');
@@ -134,14 +155,47 @@ const Home = () => {
             body : JSON.stringify(post),
             headers : {
                 'content-type' : 'application/json'
-                // 'authorization' : 'Bearer' + localStorage.getItem('token-edux')
             }
         })
         .then(response => response.json())
         .then(dados => {
-            alert('Post salvo com sucesso!');
 
-            listarPosts();
+            fetch(`http://localhost:5000/api/Usuario/${idUsuario}`, {
+                method : 'GET'
+            })
+            .then(response => response.json())
+            .then(dados => {
+                console.log(dados);
+                setPostagensTotais(dados.postagensTotais + 1);
+                setCurtidasTotais(dados.curtidasTotais);
+
+                let conquistas = {
+                    idUsuario: idUsuario,
+                    postagensTotais: postagensTotais,
+                    curtidasTotais: curtidasTotais
+                }
+    
+                fetch(`http://localhost:5000/api/Usuario/${idUsuario}`, {
+                    method : 'PATCH',
+                    body : JSON.stringify(conquistas),
+                    headers : {
+                        'content-type' : 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(dadoss => {
+                    console.log(dadoss)
+                    setPostagensTotais(dados.postagensTotais);
+                    console.log(postagensTotais)
+                    console.log('deu tudo certo meu lindo!')
+                });
+                alert('Post salvo com sucesso!');
+    
+                listarPosts();
+                
+            });
+
+            
         })
         .catch(err => console.error(err))
     }
@@ -150,7 +204,7 @@ const Home = () => {
         event.preventDefault();
         executeScroll();
 
-        console.log('A')
+        // console.log('A')
 
         fetch(`${url}/${event.target.value}`, {
             method : 'GET'
@@ -164,6 +218,7 @@ const Home = () => {
             setLink(dado.link);
             setUrlImagem(dado.urlImagem);
             setDescricao(dado.descricao);
+            setCurtidas(dado.curtidas);
         })
     }
 
@@ -184,17 +239,60 @@ const Home = () => {
         })
     }
 
+    const likes = (event) => {
+        event.preventDefault();
+
+        fetch(`${url}/${event.target.value}`, {
+            method : 'GET'
+        })
+        .then(response => response.json())
+        .then(dado => {
+            console.log(dado);
+            console.log(dado.curtidas)
+
+            var curtidas = Number(dado.curtidas);
+
+
+            const post = {
+                nome : dado.nome,
+                urlImagem : dado.urlImagem,
+                link : dado.link,
+                descricao : dado.descricao,
+                nomeUser: dado.nomeUser,
+                curtidas: dado.curtidas + 1
+            }     
+
+            fetch(`${url}/${event.target.value}`, {
+                method : 'PUT',
+                body : JSON.stringify(post),
+                headers : {
+                    'content-type' : 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(dadoS => {
+            console.log(dadoS.curtidas)
+
+            listarPosts();
+        })
+        })
+
+        
+    }
+    
+
     function EditarRemover(item){
 
         if((jwt_decode(token).nameid) === item.nomeUser){
             return(
-                <div style={{justifyContent: 'space-around'}}>
-                <Button type="button" variant="warning" value={item.id} onClick={ event => editar(event)}>Editar</Button>
-                <Button type="button" variant="danger" value={item.id} style={{ marginLeft : '30px'}} onClick={ event => remover(event)}>Remover</Button>
+                <div style={{display: 'flex', justifyContent: 'space-evenly', marginTop: '0.3em'}}>
+                <Button type="button" variant="warning" value={item.id}  onClick={ event => editar(event)}>Editar</Button>
+                <Button type="button" variant="danger" value={item.id}  onClick={ event => remover(event)}>Remover</Button>
                 </div>
         )
         }
     }
+   
 
     const renderHome = () => {
         const token = localStorage.getItem('token-edux');
@@ -203,7 +301,7 @@ const Home = () => {
         let tokenAluno = 'Aluno';
 
             // jwt_decode(token).role
-        if(tokenProfessor  === 'Professora'){
+        if(jwt_decode(token).role  === 'Professorre'){
             return (
                 <div>
                     <div className="cards">
@@ -215,7 +313,7 @@ const Home = () => {
                                 Some quick example text to build on the card title and make up the bulk of
                                 the card's content.
                                 </Card.Text>
-                                <a href="/gerenciarAluno">
+                                <a href="/adm/alunos">
                                 <Button variant="primary">Ir</Button>
                                 </a>
                             </Card.Body>
@@ -223,12 +321,12 @@ const Home = () => {
                         <Card style={{ width: '18rem' }}>
                             <Card.Img variant="top" src={img3} style={{padding : '1em'}} />
                             <Card.Body>
-                                <Card.Title>Turmas</Card.Title>
+                                <Card.Title>Gerenciar Dicas</Card.Title>
                                 <Card.Text>
                                 Some quick example text to build on the card title and make up the bulk of
                                 the card's content.
                                 </Card.Text>
-                                <a href="/turmas">
+                                <a href="/adm/dicas">
                                 <Button variant="primary">Ir</Button>
                                 </a>
                             </Card.Body>
@@ -282,19 +380,6 @@ const Home = () => {
                                             <Form.Label>Link (Opcional) </Form.Label>
                                             <Form.Control type="text" value={link} onChange={event => setLink(event.target.value)} placeholder="http://"></Form.Control>
                                         </Form.Group>
-                                        {/* <Form.Group controlId="formBasicCurso">
-                                            <Form.Label>Curso</Form.Label>
-                                            <Form.Control as="select" size="lg" custom defaultValue={cursoId} onChange={event => setCursoId(event.target.value)} >
-                                                <option value={0}>Selecione</option>
-                                                {
-                                                    cursos.map((item, index) => {
-                                                        return(
-                                                            <option value={item.id}>{item.nome}</option>
-                                                        )
-                                                    })
-                                                }
-                                            </Form.Control>
-                                        </Form.Group> */}
                                         
                                         <Form.Group controlId="formBasicUrl">
                                             <Form.Label>Descrição</Form.Label>
@@ -318,16 +403,22 @@ const Home = () => {
                                 { 
                                     posts.map((item, index) => {
                                         return (
-                                            <Card style={{ width: '18rem', height : '15em', marginTop: '2em', marginBottom: '2em' }}>
-                                            {/* <Card.Img variant="top" src={item.urlImagem} /> */}
+                                            <Card style={{ width: '20em', height : '19em', marginTop: '2em', marginBottom: '2em' }}>
                                             <Card.Body>
-                                                <p>{item.nomeUser}</p>
+                                                
+                                                <p><Card.Img style={{ width: '20%'}} variant="top" src={item.urlImagem} /> {item.nomeUser}</p>
                                                 <Card.Title>{item.nome}</Card.Title>
                                                 <Card.Text>
                                                 {item.descricao}
                                                 
                                                 </Card.Text>
-                                                <Button variant="primary" style={{width: '100%'}}>Go somewhere</Button>
+                                                
+                                                
+                                                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                                    <a href={item.link}><Button variant="primary" style={{width: '100%'}}>Ir</Button></a>
+                                                    
+                                                    <Button variant="primary" value={item.id} style={{width: '100%', marginLeft: '0,3em'}} onClick={ event => likes(event)} >Likes: {item.curtidas}</Button>
+                                                </div>
                                                 {
                                                     EditarRemover(item)
                                                 }
@@ -359,12 +450,12 @@ const Home = () => {
                         <Card style={{ width: '18rem' }}>
                             <Card.Img variant="top" src={img3} style={{padding : '1em'}} />
                             <Card.Body>
-                                <Card.Title>Turmas</Card.Title>
+                                <Card.Title>Dicas</Card.Title>
                                 <Card.Text>
                                 Some quick example text to build on the card title and make up the bulk of
                                 the card's content.
                                 </Card.Text>
-                                <a href="/turmas">
+                                <a href="/dicas">
                                 <Button variant="primary">Ir</Button>
                                 </a>
                             </Card.Body>

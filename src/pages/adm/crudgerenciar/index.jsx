@@ -1,50 +1,88 @@
 import React, { useEffect, useState } from "react";
 import Menu from '../../../components/menu/index';
 import Rodape from '../../../components/rodape/index';
-import { Form, Container, Button, Table, Card } from "react-bootstrap";
+import { Form, Container, Button, Table, Card, Jumbotron } from "react-bootstrap";
 import { url } from "../../../utils/constants";
 
 const Gerenciar = () => {
-    const [idGeren, setIdGeren] = useState(0);
-    const [nome, setNome] = useState("");
-    const [data, setData] = useState("");
+    // let url = 'http://localhost:55718/api/AlunoTurma';
+    let url = 'https://5f7f873fd6aabe00166f06be.mockapi.io/nyous/alunos'
+
+    const [idAlunoTurma, setIdAlunoTurma] = useState(0);
+
+    const [idUsuario, setIdUsuario] = useState("");
+    const [nomeUsuario, setNomeUsuario] = useState("");
+
+    const [idTurma, SetIdTurma] = useState("");
+    const [matricula, SetMatricula] = useState("");
+
+    const [alunos, SetAlunos] = useState([]);
+
+    const [alunosPorId, SetAlunosPorId] = useState([]);
 
     useEffect(() => {
         listar();
     }, [])
 
     const listar = () => {
-        fetch(`${url}/GerenciarAluno`)
+        fetch(`${url}`)
             .then(response => response.json())
             .then(dados => {
-                setNome(dados.data);
+                SetAlunos(dados);
+                // setIdAluno(dados.idAluno);
+                console.log(dados)
+
+                limparCampos();
             })
             .catch(err => console.error(err));
     }
 
-    const salvar = (event) => {
+    const listarPorId = (event) => {
         event.preventDefault();
 
-        const geren = {
-            nome: nome,
-            data: data
-        }
-
-
-        let method = (id === 0 ? 'POST' : 'PUT');
-        let urlRequest = (id === 0 ? `${url}/gerenciar` : `${url}/gerenciar/${id}`);
-
-        fetch(urlRequest, {
-            method: method,
-            body: JSON.stringify(geren),
-            headers: {
-                'content-type': 'application/json',
-                'authorization': 'Bearer ' + localStorage.getItem('token-edux')
+        fetch(`${url}/${idAlunoTurma}`, {
+            method : 'GET',
+            headers : {
+                'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
             }
         })
             .then(response => response.json())
             .then(dados => {
-                alert('Aluno cadastrado');
+                SetAlunosPorId(dados);
+
+                console.log(dados);
+
+                limparCampos();
+            })
+            .catch(err => console.error(err));
+
+    }
+
+
+    const salvar = (event) => {
+        event.preventDefault();
+
+        const aluno = {
+            idUsuario: idUsuario,
+            idTurma: idTurma,
+            matricula: matricula
+        }
+
+
+        let method = (idAlunoTurma === 0 ? 'POST' : 'PUT');
+        let urlRequest = (idAlunoTurma === 0 ? `${url}/` : `${url}/${idAlunoTurma}`);
+
+        fetch(urlRequest, {
+            method: method,
+            body: JSON.stringify(aluno),
+            headers: {
+                'content-type': 'application/json'
+                // 'authorization': 'Bearer ' + localStorage.getItem('token-edux')
+            }
+        })
+            .then(response => response.json())
+            .then(dados => {
+                alert('Aluno cadastrado!');
 
                 listar();
             })
@@ -56,28 +94,29 @@ const Gerenciar = () => {
 
         fetch(`${url}/${event.target.value}`, {
             method : 'GET',
-            // headers : {
-            //     'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
-            // }
+            headers : {
+                'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
+            }
         })
         .then(response => response.json())
         .then(dado => {
-            setIdGeren(dado.idGeren);
-            setNome(dado.nome);
-            setData(dado.data);
+            setIdAlunoTurma(dado.idAlunoTurma);
+            setIdUsuario(dado.idUsuario);
+            SetIdTurma(dado.idTurma);
+            SetMatricula(dado.matricula);
         })
     }
 
     const remover = (event) => {
         event.preventDefault();
 
-        console.log(event.target)
+        // console.log(event.target)
 
         fetch(`${url}/${event.target.value}`,{
             method : 'DELETE',
-            // headers : {
-            //     'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
-            // }
+            headers : {
+                'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
+            }
         })
         .then(response => response.json())
         .then(dados => {
@@ -88,9 +127,10 @@ const Gerenciar = () => {
     }
 
     const limparCampos = () => {
-        setIdGeren(0);
-        setNome('');
-        setData('');
+        setIdAlunoTurma(0);
+        setIdUsuario('');
+        SetIdTurma('');
+        SetMatricula('');
     }
 
 
@@ -101,7 +141,7 @@ const Gerenciar = () => {
             <Container>
 
             <Jumbotron style={{marginTop : '2em'}}> 
-                        <h1 style={{color: 'black'}}>Dicas</h1>
+                        <h1 style={{color: 'black'}}>Alunos</h1>
                         <p>
                             Gerencie os seus alunos!
                         </p>
@@ -112,14 +152,18 @@ const Gerenciar = () => {
                      
                 <Form onSubmit = {event => salvar(event)}>
                     <Form.Group controlId="forNome">
-                     <Form.Label>Nome</Form.Label>
-                     <Form.Control type="text" value= {nome} onChange={event => setNome(event.target.value)} />
+                     <Form.Label>Id de Usuario</Form.Label>
+                     <Form.Control type="text" value={idUsuario} onChange={event => setIdUsuario(event.target.value)} />
+                    </Form.Group>
+                    <Form.Group controlId="forNome">
+                     <Form.Label>Id de Turma</Form.Label>
+                     <Form.Control type="text" value={idTurma} onChange={event => SetIdTurma(event.target.value)} />
+                    </Form.Group>
+                    <Form.Group controlId="forNome">
+                     <Form.Label>Matrícula</Form.Label>
+                     <Form.Control type="text" value={matricula} onChange={event => SetMatricula(event.target.value)} />
                     </Form.Group>
                     
-                    <Form.Group controlId="forNome">
-                     <Form.Label>Data</Form.Label>
-                     <Form.Control type="text" value= {data} onChange={event => setData(event.target.value)}> </Form.Control>
-                    </Form.Group>
 
                     <Button type="text"> Cadastrar </Button> 
                 </Form>
@@ -128,44 +172,46 @@ const Gerenciar = () => {
 
              </Card>
 
-             <Card>
+             {/* <Card>
                  <Card.Body>
 
-                 <Form>
+                    {/* <Form onSubmit = {event => dadosUsuario(event)}>
                             <Form.Group controlId="formNome">
-                                <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Nome do Aluno"></Form.Control>
-                            </Form.Group>
-
-                            <Form.Group>
-                                <Form.Control type="text" value={data} onChange={event => setData(event.target.value)} placeholder="Data de nascimento do Aluno"></Form.Control>
+                                <Form.Control type="text" value={idAlunoTurma} onChange={event => setIdAlunoTurma(event.target.value)} placeholder="Id de Aluno"></Form.Control>
                             </Form.Group>
 
                             <Button type="text">Filtrar</Button>
-                        </Form>
-
+                    </Form> */}
+{/* 
                  </Card.Body>
-             </Card>
+             </Card> */} 
 
              <Table bordered>
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Nome</th>
-                                <th>Data</th>
+                                {/* <th>#</th> */}
+                                <th>Id Usuario</th>
+                                <th>Id Turma</th>
+                                <th>Matricula</th>
+                                {/* <th>Data</th> */}
                                 {/* <th>Id</th> */}
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                gerenciar.map((item, index) => {
+                                alunos.map((item, index) => {
+                                    // dadosUsuario(item.idUsuario);
+
                                     return (
                                         <tr key={index}>
-                                            <td>{item.nome}</td>
-                                            <td>{item.data}</td>
+                                            <td>{item.idUsuario}</td>
+                                            <td>{item.idTurma}</td>
+                                            <td>{item.matricula}</td>
+                                            {/* <td>{item.data}</td> */}
                                             <td>
-                                                <Button variant="warning" value={item.idGeren} onClick={event => editar(event)} >Editar</Button>
-                                                <Button variant="danger" value={item.idGeren} onClick={event => remover(event)} style={{ marginLeft : '40px'}}>Remover</Button>
+                                                <Button variant="warning" value={item.idAlunoTurma} onClick={event => editar(event)} >Editar</Button>
+                                                <Button variant="danger" value={item.idAlunoTurma} onClick={event => remover(event)} style={{ marginLeft : '40px'}}>Remover</Button>
                                             </td>
                                         </tr>
                                     )

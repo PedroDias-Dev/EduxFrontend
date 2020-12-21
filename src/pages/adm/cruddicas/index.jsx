@@ -10,8 +10,8 @@ import './style.css'
 
 const Dicas = () => {
 
-    // let url = 'http://localhost:55718/api/Dica';
-    let url = 'https://5f7f873fd6aabe00166f06be.mockapi.io/nyous/dicas'
+    let url = 'http://localhost:5000/api/Dica';
+    // let url = 'https://5f7f873fd6aabe00166f06be.mockapi.io/nyous/dicas'
 
     const [idDica, setIdDica] = useState(0);
     const [texto, setTexto] = useState('');
@@ -35,7 +35,7 @@ const Dicas = () => {
 
             limparCampos();
 
-            setDicas((dados));
+            setDicas((dados.data));
         })
         .catch(err => console.log(err))
       }
@@ -56,8 +56,8 @@ const Dicas = () => {
             method : method,
             body : JSON.stringify(dica),
             headers : {
-                'content-type' : 'application/json',
-                'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
+                'content-type' : 'application/json'
+                // 'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
             }
         })
         .then(response => response.json())
@@ -74,12 +74,17 @@ const Dicas = () => {
         event.preventDefault();
 
         let formdata = new FormData();
+        console.log(event.target.files[0])
 
         formdata.append('arquivo', event.target.files[0]);
 
-        fetch(url ,{
+        fetch('http://localhost:5000/api/Upload' ,{
             method : 'POST',
-            body : formdata
+            body : formdata,
+            // headers : {
+            //     'content-type' : 'multipart/form-data',
+            //     // 'authorization' : 'Bearer ' + localStorage.getItem('token-edux')
+            // }
         })
         .then(response => response.json())
         .then(data => {
@@ -119,7 +124,7 @@ const Dicas = () => {
         })
         .then(response => response.json())
         .then(dados => {
-            alert('Categoria removida');
+            alert('Dica removida com sucesso!');
 
             listar();
         })
@@ -158,7 +163,7 @@ const Dicas = () => {
                         </Form>
                         </Card.Body>
                     </Card>
-                    <Table bordered>
+                    <Table bordered style={{marginTop: '20px'}}>
                         <thead>
                             <tr>
                                 <th>Imagem</th>

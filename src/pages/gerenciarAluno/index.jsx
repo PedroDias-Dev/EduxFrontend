@@ -1,32 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import Menu from '../../components/menu/index';
 import Rodape from '../../components/rodape/index';
-import { Form, Button, Table, FormControl } from 'react-bootstrap';
-import { url } from '../../utils/constants';
+import { Form, Button, Table, FormControl, Toast } from 'react-bootstrap';
+// import { url } from '../../utils/constants';
 import './index.css'
 
 const GerenciarAluno = () => {
-
+    // let url = 'http://localhost:55718/api/AlunoTurma'
+    let url = 'https://5f7f873fd6aabe00166f06be.mockapi.io/nyous/alunos'
 
     const [nome, setNome] = useState("");
+    const [alunos, setAlunos] = useState([]);
+
+    const [id, setId] = useState(0);
+    const [idAluno, setIdAluno] = useState('');
+    const [matricula, setMatricula] = useState('');
+    const [idUsuario, setIdUsuario] = useState('');
+    const [idTurma, setIdTurma] = useState('');
+
+    const [alunosBusca, setAlunosBusca] = useState([]);
 
     useEffect(() => {
         listar();
     }, [])
 
     const listar = (event) => {
-        fetch(`${url}/gerenciarAluno`)
+        fetch(`${url}`)
             .then(response => response.json())
             .then(dados => {
-                setNome(dados.data);
+                setAlunos(dados);
+            })
+            .catch(err => console.error(err));
+    }
+
+    const buscar = (event) => {
+        event.preventDefault();
+
+        fetch(`${url}/${idAluno}`)
+            .then(response => response.json())
+            .then(dados => {
+                console.log(dados)  
+                
+                setAlunosBusca(dados);
+                return (
+                    <tr >
+                        <td>{dados.id}</td>
+                        <td>{dados.idUsuario}</td>
+                        <td>{dados.matricula}</td>
+                        <td>{dados.idTurma}</td>
+                    </tr>
+                )
+
             })
             .catch(err => console.error(err));
     }
 
 
-    const cadastrar = (event) => {
-        event.prevent.default();
-    }
+    // const cadastrar = (event) => {
+    //     event.prevent.default();
+    // }
 
     return (
 
@@ -37,33 +69,32 @@ const GerenciarAluno = () => {
                 <div className="row">
 
                     <div>
-                        <h1 style={{ fontSize: "2.3em", marginLeft: "20px" }}>Gerenciar Alunos</h1>
-                    </div>
-
-                    <div className="containern">
-                        <Form onSubmit={event => cadastrar(event)}>
-                            <Form.Group controlId="formGerenciar">
-                            <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Cadastre o aluno</Form.Label>
-                                <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Cadastre o aluno">
-                                </Form.Control>
-                                <Form.Label for="diaa" style={{ color: "lavender", paddingTop:"15px" }}>Informe a data de nascimento do Aluno</Form.Label>
-                                <div style={{ marginBottom: "10px" }}>
-                                 <input type="date" id="diaa" name="diaa" ></input>
-                                 </div>
-                            </Form.Group>
-                            
-                            <Button type="submit" style={{ marginBottom: "10px" }}>Cadastrar</Button>
-                        </Form>
+                        <h1 style={{ fontSize: "2.3em", marginLeft: "20px" }}>Alunos</h1>
                     </div>
 
                     <div className="container">
                        <Form >
-                       <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Busque o aluno</Form.Label>
-                         <Form inline> 
-                            <Form.Group controlId="formGerenciar">
-                                <Form.Control type="text" value={nome} onChange={event => setNome(event.target.value)} placeholder="Nome do Aluno"></Form.Control>
-                                <Button variant="outline-success" style={{ color: "lavender", marginLeft: "10px", }}>Search</Button>
-                            </Form.Group>   
+                            <Form.Label style={{ color: "lavender", paddingTop:"15px" }}>Busque o aluno</Form.Label>
+                                <Form inline> 
+                                    <Form.Group controlId="formGerenciar">
+                                        <Form.Control type="text" value={idAluno} onChange={event => setIdAluno(event.target.value)} placeholder="Id de Aluno"></Form.Control>
+                                    </Form.Group>   
+                            <Button onClick={event => buscar(event)} variant="outline-success" type='submit' style={{ color: "lavender", marginLeft: "10px", }}>Search</Button>
+                            <div className="col">
+                                <Table striped bordered variant="dark">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Id de Usuario</th>
+                                            <th>Matricula</th>
+                                            <th>Id de Turma</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </Table>
+                            </div>
                         </Form>
                         
                             <Form.Group>
@@ -110,47 +141,25 @@ const GerenciarAluno = () => {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Nome</th>
-                                    <th>Data de nascimento</th>
+                                    <th>Id de Usuario</th>
+                                    <th>Matricula</th>
+                                    <th>Id de Turma</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>André</td>
-                                    <td>11/02/2006</td>
-
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Alice</td>
-                                    <td>16/04/2005</td>
-
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Pedro</td>
-                                    <td>19/08/2006</td>
-
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Pedro</td>
-                                    <td>09/10/2006</td>
-
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Pedro</td>
-                                    <td>14/09/2005</td>
-
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>Pedro</td>
-                                    <td>28/06/2005</td>
-
-                                </tr>
+                                
+                                {
+                                alunos.map((item, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{item.id}</td>
+                                            <td>{item.idUsuario}</td>
+                                            <td>{item.matricula}</td>
+                                            <td>{item.idTurma}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
                             </tbody>
                         </Table>
                     </div>

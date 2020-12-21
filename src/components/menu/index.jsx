@@ -14,6 +14,8 @@ const Menu = () => {
         history.push('/')
     }
 
+    
+
     const renderMenu = () => {
         const token = localStorage.getItem('token-edux');
 
@@ -28,7 +30,7 @@ const Menu = () => {
                     <Nav.Link href="/cadastrar">Cadastrar</Nav.Link>
                 </Nav>
             );
-            // jwt_decode(token).role
+            // 
         } else if(jwt_decode(token).role  === 'Professor'){
             return (
                 <Nav>
